@@ -1,1 +1,1 @@
-[![Build Status](https://github.com/aapitman/emento/workflows/Java%20CI/badge.svg)](https://github.com/aapitman/emento/actions)
+[![Build Status](https://github.com/abledenthusiast/emento/workflows/Java%20CI/badge.svg)](https://github.com/abledenthusiast/emento/actions)
