@@ -1,2 +1,8 @@
-EmentoApplication.class
-EmentoController.class
+com/abledenthusiast/emento/$EmentoControllerDefinitionClass$$AnnotationMetadata.class
+META-INF/services/io.micronaut.inject.BeanDefinitionReference
+com/abledenthusiast/emento/$EmentoControllerDefinition.class
+com/abledenthusiast/emento/$EmentoControllerDefinition$$exec1$$AnnotationMetadata.class
+com/abledenthusiast/emento/EmentoController.class
+com/abledenthusiast/emento/$EmentoControllerDefinitionClass.class
+com/abledenthusiast/emento/$EmentoControllerDefinition$$exec1.class
+com/abledenthusiast/emento/EmentoApplication.class
