@@ -8,6 +8,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.azureWebAppPublishProfile }}
     - uses: actions/checkout@v1
     - name: Set up JDK 11
       uses: actions/setup-java@v1
@@ -15,8 +18,12 @@ jobs:
         java-version: 11
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: 'Run Azure webapp deploy action using publish profile credentials'
-      uses: azure/webapps-deploy@v1
-      with:
-        creds: ${{ secrets.azureWebAppPublishProfile }}
+    # deploy web app using publish profile credentials
+    - uses: azure/webapps-deploy@v1
+      with: 
+        app-name: emento  # Replace with your app name
+        package: '${{ github.workspace }}/server/target/*.war'
+    - name: logout
+      run: |
+        az logout
       
