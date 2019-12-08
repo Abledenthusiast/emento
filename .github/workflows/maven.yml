@@ -18,5 +18,5 @@ jobs:
     - name: 'Run Azure webapp deploy action using publish profile credentials'
       uses: azure/webapps-deploy@v1
       with:
-        creds: ${{ secrets.emento - Web Deploy }}
+        creds: ${{ secrets.azureWebAppPublishProfile }}
       
