@@ -6,7 +6,7 @@
   <artifactId>emento</artifactId>  
   <version>1.0-SNAPSHOT</version>  
   <packaging>pom</packaging>  
-  <name>emento Maven Webapp</name>  
+  <name>emento Maven Webapp</name>
   <!-- FIXME change it to the project's website -->  
   <url>https://emento.azurewebsites.net/</url>  
   <properties> 
