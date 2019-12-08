@@ -23,7 +23,7 @@ jobs:
     - uses: azure/webapps-deploy@v1
       with: 
         app-name: emento  # Replace with your app name
-        package: '${{ github.workspace }}/server/target/*.war'
+        package: '${{ github.workspace }}/server/target/emento.war'
     - name: logout
       run: |
         az logout
