@@ -22,7 +22,7 @@ public class EmentoController {
     @Get("/ping")
     @Produces(MediaType.TEXT_JSON)
     public String ping() {
-        log.info("apiKey is nonNull? {}", EmentoProperties.sendGridAPIKey() != null);
+        log.info("apiKey is default value? {}", EmentoProperties.sendGridAPIKey().equals("I_AM_NOT_A_KEY"));
         return "{status:OK, apiKey: " + EmentoProperties.sendGridAPIKey().hashCode() + "}";
     }
 
