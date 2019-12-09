@@ -4,4 +4,4 @@ micronaut:
   server:
     port: 80
 sendgrid:
-  apiKey: ${sendgrid-api-key:iamnotasecret}
+  apiKey: ${sendgridApiKey:iamnotasecret}
