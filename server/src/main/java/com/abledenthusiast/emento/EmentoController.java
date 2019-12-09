@@ -12,6 +12,8 @@ import io.micronaut.http.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
+
 @Controller("/api")
 public class EmentoController {
     private final Logger log = LoggerFactory.getLogger(EmentoController.class);
@@ -19,11 +21,14 @@ public class EmentoController {
     private TaskFactory taskFactory;
     private Scheduler scheduler;
 
+    @Inject
+    protected EmentoProperties ementoProperties;
+
     @Get("/ping")
     @Produces(MediaType.TEXT_JSON)
     public String ping() {
-        log.info("apiKey is default value? {}", EmentoProperties.sendGridAPIKey().equals("I_AM_NOT_A_KEY"));
-        return "{status:OK, apiKey: " + EmentoProperties.sendGridAPIKey().hashCode() + "}";
+        log.info("apiKey is default value? {}", ementoProperties.sendGridAPIKey().equals("I_AM_NOT_A_KEY"));
+        return "{status:OK, apiKeyDefaultValue: " + ementoProperties.sendGridAPIKey() + "}";
     }
 
     @Post("/schedule")

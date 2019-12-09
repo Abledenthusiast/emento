@@ -1,9 +1,19 @@
 package com.abledenthusiast.emento;
 
-public class EmentoProperties {
-    private final static String SENDGRID_API_KEY = "sendgrid_api_key";
+import io.micronaut.context.annotation.Property;
+import io.micronaut.context.annotation.Value;
 
-    public static String sendGridAPIKey() {
-        return System.getProperty(SENDGRID_API_KEY, "I_AM_NOT_A_KEY");
+import javax.inject.Singleton;
+
+@Singleton
+public class EmentoProperties {
+
+    @Property(name = "sendgrid.api-key")
+    protected String sendGridApiKey;
+
+
+    public String sendGridAPIKey() {
+        System.out.println("sendgrid api key 1 " + System.getProperty("sendgrid.api"));
+        return sendGridApiKey;
     }
 }

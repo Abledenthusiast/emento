@@ -1,6 +1,7 @@
 micronaut:
   application:
     name: emento
-
   server:
     port: 80
+sendgrid:
+  apiKey: ${sendgrid-api-key:iamnotasecret}

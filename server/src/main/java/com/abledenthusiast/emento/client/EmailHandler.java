@@ -19,8 +19,8 @@ public class EmailHandler {
     private SendGrid sendGrid;
 
     public EmailHandler() {
-        log.info("sendgrid key is non-null: {}", EmentoProperties.sendGridAPIKey());
-        sendGrid = new SendGrid(EmentoProperties.sendGridAPIKey());
+        log.info("sendgrid key is non-null: {}", new EmentoProperties().sendGridAPIKey());
+        sendGrid = new SendGrid(new EmentoProperties().sendGridAPIKey());
     }
 
 
