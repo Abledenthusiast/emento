@@ -27,8 +27,8 @@ public class EmentoController {
     @Get("/ping")
     @Produces(MediaType.TEXT_JSON)
     public String ping() {
-        log.info("apiKey is default value? {}", ementoProperties.sendGridAPIKey().equals("I_AM_NOT_A_KEY"));
-        return "{status:OK, apiKeyDefaultValue: " + ementoProperties.sendGridAPIKey() + "}";
+        log.info("apiKey is default value? {}", ementoProperties.sendGridAPIKey().equals("iamnotasecret"));
+        return "{status:OK, apiKeyDefaultValue: " + ementoProperties.sendGridAPIKey().equals("iamnotasecret") + "}";
     }
 
     @Post("/schedule")
