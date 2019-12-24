@@ -1,6 +1,7 @@
 package com.abledenthusiast.emento.dao.connectionfactory;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.ProtocolVersion;
 import com.datastax.driver.core.Session;
 
 public class CassandraConnectionFactory implements ConnectionFactory<Session> {
@@ -22,6 +23,7 @@ public class CassandraConnectionFactory implements ConnectionFactory<Session> {
     public Session connect() {
         if (cluster == null) {
             cluster = Cluster.builder()
+                             .withProtocolVersion(ProtocolVersion.V4)
                              .addContactPoint(host)
                              .withPort(port)
                              .withCredentials(username, password)
