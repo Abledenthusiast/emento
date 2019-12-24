@@ -1,8 +1,12 @@
 package com.abledenthusiast.emento.scheduling;
 
+import com.abledenthusiast.emento.EmentoProperties;
 import com.abledenthusiast.emento.client.EmailHandler;
+import com.abledenthusiast.emento.client.Handler;
 import com.abledenthusiast.emento.scheduling.tasks.ExecutionTask;
 import com.abledenthusiast.emento.scheduling.tasks.Task;
+
+import java.util.Properties;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -11,12 +15,13 @@ import java.util.concurrent.TimeUnit;
 public class InstanceScheduler implements Scheduler {
     private final int POOL_SIZE = 8;
     private ScheduledExecutorService executor;
-    private EmailHandler emailHandler;
+    private Handler emailHandler;
+    private EmentoProperties ementoProperties;
 
 
-    public InstanceScheduler() {
+    public InstanceScheduler(EmentoProperties ementoProperties) {
         executor = new ScheduledThreadPoolExecutor(POOL_SIZE);
-        emailHandler = new EmailHandler();
+        emailHandler = new EmailHandler(ementoProperties);
     }
 
     @Override
@@ -28,6 +33,7 @@ public class InstanceScheduler implements Scheduler {
 
     public static class SchedulerBuilder {
         private int maxSize;
+        private EmentoProperties props;
 
         public SchedulerBuilder() {}
 
@@ -36,8 +42,13 @@ public class InstanceScheduler implements Scheduler {
             return this;
         }
 
+        public SchedulerBuilder withProperties(EmentoProperties properties) {
+            this.props = properties;
+            return this;
+        }
+
         public Scheduler build() {
-            InstanceScheduler scheduler = new InstanceScheduler();
+            InstanceScheduler scheduler = new InstanceScheduler(props);
             /*
              Room for more fun!
             */

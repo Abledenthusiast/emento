@@ -3,5 +3,16 @@ micronaut:
     name: emento
   server:
     port: 80
-sendgrid:
-  apiKey: ${sendgridApiKey:iamnotasecret}
+emento:
+  sendgrid:
+    apiKey: ${sendgrid.api.key:iamnotasecret}
+
+  cassandra:
+    host: ${CUSTOMCONNSTR_AccountEndpoint:localhost}
+    password: ${CUSTOMCONNSTR_AccountKey:cassandra}
+    username: ${cassandra.username:cassandra}
+    port: ${cassandra.port:9042}
+
+  queue:
+    connectionString: ${service.bus.connection.string:iamnotasecret}
+    name: abledenthusiastqueue
