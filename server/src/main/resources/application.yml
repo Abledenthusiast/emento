@@ -8,8 +8,8 @@ emento:
     apiKey: ${sendgrid.api.key:iamnotasecret}
 
   cassandra:
-    host: ${CUSTOMCONNSTR_AccountEndpoint:localhost}
-    password: ${CUSTOMCONNSTR_AccountKey:cassandra}
+    host: ${cassandra.host:localhost}
+    password: ${cassandra.accountKey:cassandra}
     username: ${cassandra.username:cassandra}
     port: ${cassandra.port:9042}
 
