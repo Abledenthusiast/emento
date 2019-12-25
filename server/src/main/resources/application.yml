@@ -11,7 +11,7 @@ emento:
     host: ${cassandra.host:localhost}
     password: ${cassandra.accountKey:cassandra}
     username: ${cassandra.username:cassandra}
-    port: ${cassandra.port:9042}
+    port: 10350
 
   queue:
     connectionString: ${service.bus.connection.string:iamnotasecret}
