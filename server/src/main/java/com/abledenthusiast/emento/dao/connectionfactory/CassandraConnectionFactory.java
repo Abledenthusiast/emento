@@ -33,6 +33,7 @@ public class CassandraConnectionFactory implements ConnectionFactory<Session> {
     @Override
     public Session connect() {
         if (cluster == null) {
+            JdkSSLOptions sslOptions = null;
             try {
                 loadCassandraConnectionDetails();
 
@@ -52,7 +53,7 @@ public class CassandraConnectionFactory implements ConnectionFactory<Session> {
                 final SSLContext sc = SSLContext.getInstance("TLSv1.2");
                 sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(), new java.security.SecureRandom());
 
-                JdkSSLOptions sslOptions = RemoteEndpointAwareJdkSSLOptions.builder()
+                sslOptions = RemoteEndpointAwareJdkSSLOptions.builder()
                                                                            .withSSLContext(sc)
                                                                            .build();
             } catch(Exception e) {
@@ -63,6 +64,7 @@ public class CassandraConnectionFactory implements ConnectionFactory<Session> {
                              .addContactPoint(host)
                              .withPort(port)
                              .withCredentials(username, password)
+                             .withSSL(sslOptions)
                              .build();
         }
 
