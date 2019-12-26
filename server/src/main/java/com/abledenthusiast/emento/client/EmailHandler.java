@@ -21,7 +21,6 @@ public class EmailHandler implements Handler {
 
 
     public EmailHandler(EmentoProperties ementoProperties) {
-        log.info("sendgrid key is non-null: {}", ementoProperties.sendgridApiKey());
         sendGrid = new SendGrid(ementoProperties.sendgridApiKey());
     }
 
