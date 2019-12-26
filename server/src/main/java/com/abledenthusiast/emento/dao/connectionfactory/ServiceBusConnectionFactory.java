@@ -25,7 +25,6 @@ public class ServiceBusConnectionFactory implements ConnectionFactory<QueueClien
     @Override
     public QueueClient connect() {
         try {
-            log.info(connectionString);
             return new QueueClient(new ConnectionStringBuilder(connectionString, queueName), ReceiveMode.PEEKLOCK);
         } catch(ServiceBusException | InterruptedException exception) {
             throw new RuntimeException(exception);
