@@ -1,5 +1,6 @@
 package com.abledenthusiast.emento.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -22,14 +23,40 @@ public class Schedule {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @JsonProperty
     private UUID id;
+
+    @JsonProperty
     private String scheduledTime;
+
+    @JsonProperty
     private Email creator;
+
+    @JsonProperty
     private List<Email> destinations;
+
+    @JsonProperty
     private String messageTitle;
+
+    @JsonProperty
     private String messageBody;
 
+    @JsonProperty
     private Instant savedInstant;
+
+
+    public Schedule() {}
+
+    public Schedule(UUID id, String scheduledTime, Email creator, List<Email> destinations, String messageTitle, String messageBody, Instant savedInstant) {
+        this.id = id;
+        this.scheduledTime = scheduledTime;
+        this.creator = creator;
+        this.destinations = destinations;
+        this.messageTitle = messageTitle;
+        this.messageBody = messageBody;
+        this.savedInstant = savedInstant;
+    }
+
 
     public UUID id() {
         return id;
