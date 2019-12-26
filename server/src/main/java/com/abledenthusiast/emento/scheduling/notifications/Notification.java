@@ -37,7 +37,23 @@ public class Notification {
         this.recurrence = recurrence;
     }
 
+    /**
+     * Should only be used when schedule contains a message title and body
+     * @param schedule
+     */
+    public Notification(Schedule schedule) {
+        this.timestamp = schedule.timeToExecute();
+        this.messageTitle = schedule.messageTitle();
+        this.message = schedule.messageBody();
+        this.creator = schedule.getCreator();
+        this.destinations = schedule.getDestinations();
+        // this.recurrence = schedule.recurrence();
+    }
+
     public static Notification of(Schedule schedule) {
+        if (schedule.messageTitle() != null && schedule.messageBody() != null) {
+            return new Notification(schedule);
+        }
         return defaultNotification(schedule.timeToExecute(), schedule.getCreator(), schedule.getDestinations());
     }
 
@@ -50,6 +66,7 @@ public class Notification {
     public static Notification defaultNotification(Instant timestamp, Email creator, List<Email> destinations) {
         return new Notification(timestamp, DEFAULT_TITLE, DEFAULT_MESSAGE, creator, destinations);
     }
+
 
     public UUID id() {
         return id;
