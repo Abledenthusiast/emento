@@ -55,9 +55,9 @@ public class EmailHandler implements Handler {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sendGrid.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
+            log.info("sendGrid response status code: {}", response.getStatusCode());
+            log.info(response.getBody());
+            log.info("sendGrid response headers: {}", response.getHeaders());
         } catch (IOException ex) {
             throw ex;
         }
