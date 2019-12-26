@@ -1,6 +1,8 @@
 package com.abledenthusiast.emento.scheduling.ServiceBus;
 
 import com.abledenthusiast.emento.dao.connectionfactory.ConnectionFactory;
+import com.abledenthusiast.emento.dto.Schedule;
+import com.abledenthusiast.emento.scheduling.notifications.Notification;
 import com.microsoft.azure.servicebus.*;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import org.slf4j.Logger;
@@ -23,9 +25,16 @@ public class ServiceBusProducer {
         registerHandler();
     }
 
-    public void push(String json) {
+
+    public void push(Notification notification) {
         log.info("Sending message {}", Instant.now());
-        queueClient.sendAsync(new Message(json)).thenRunAsync(() -> { log.info("Sent message ");});
+        Message message = new Message(notification.toJson().get());
+        message.setScheduledEnqueueTimeUtc(notification.timestamp().minus(Duration.ofMinutes(10)));
+        queueClient.sendAsync(message).thenRunAsync(() -> { log.info("Sent message ");});
+    }
+
+    public void push(String json) {
+
     }
 
 

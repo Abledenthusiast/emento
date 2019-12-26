@@ -7,6 +7,12 @@ import com.abledenthusiast.emento.dto.Schedule;
 import com.abledenthusiast.emento.scheduling.ServiceBus.ServiceBusProducer;
 import com.abledenthusiast.emento.scheduling.notifications.Notification;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
+import java.util.UUID;
+
 
 public class TaskFactory {
 
@@ -23,13 +29,18 @@ public class TaskFactory {
 
     public ExecutionTask newExecutableTask(Schedule schedule) {
         Notification notification = Notification.of(schedule);
-        if (notification.isRecurrent()) {
+        if (notification.isRecurrent() || notification.timestamp().isAfter(Instant.now().plus(Duration.ofHours(4)))) {
             notificationDao.insert(notification);
+            serviceBusProducer.push(notification);
         }
 
-        serviceBusProducer.push(schedule.toJson().get());
-
+        serviceBusProducer.push(notification);
         return new ExecutionTask(schedule.timeToExecute(), notification);
+    }
+
+    public ExecutionTask newExecutableTask(UUID notificationId) {
+        Notification notification = notificationDao.selectNotification(notificationId);
+        return new ExecutionTask(notification.timestamp(), notification);
     }
 
 

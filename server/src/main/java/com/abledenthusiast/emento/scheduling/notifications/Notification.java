@@ -2,13 +2,19 @@ package com.abledenthusiast.emento.scheduling.notifications;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.abledenthusiast.emento.dto.Schedule;
-import com.datastax.driver.mapping.annotations.Table;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sendgrid.helpers.mail.objects.Email;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Notification {
+
+    private static final Logger log = LoggerFactory.getLogger(Notification.class);
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private UUID id;
     private Instant timestamp;
     private String messageTitle;
@@ -18,7 +24,7 @@ public class Notification {
     private Recurrence recurrence;
 
     private static final String DEFAULT_TITLE = "Emento New Notification";
-    private static final String DEFAULT_MESSAGE = "This is a reminder for %d";
+    private static final String DEFAULT_MESSAGE = "This is a reminder for %s";
 
     public Notification(Instant timestamp, String messageTitle, String message, Email creator, List<Email> destinations) {
         this.messageTitle = messageTitle;
@@ -28,7 +34,8 @@ public class Notification {
         this.destinations = destinations;
     }
 
-    public Notification(Instant timestamp, String messageTitle, String message, Email creator, List<Email> destinations, Recurrence recurrence) {
+    public Notification(UUID id, Instant timestamp, String messageTitle, String message, Email creator, List<Email> destinations, Recurrence recurrence) {
+        this.id = id;
         this.timestamp = timestamp;
         this.messageTitle = messageTitle;
         this.message = message;
@@ -37,24 +44,26 @@ public class Notification {
         this.recurrence = recurrence;
     }
 
+    public static Notification of(Schedule schedule) {
+        if (schedule.messageTitle() != null && schedule.messageBody() != null) {
+            return fromSchedule(schedule);
+        }
+        return defaultNotification(schedule.timeToExecute(), schedule.getCreator(), schedule.getDestinations());
+    }
+
     /**
      * Should only be used when schedule contains a message title and body
      * @param schedule
      */
-    public Notification(Schedule schedule) {
-        this.timestamp = schedule.timeToExecute();
-        this.messageTitle = schedule.messageTitle();
-        this.message = schedule.messageBody();
-        this.creator = schedule.getCreator();
-        this.destinations = schedule.getDestinations();
-        // this.recurrence = schedule.recurrence();
-    }
+    public static Notification fromSchedule(Schedule schedule) {
+        Instant timestamp = schedule.timeToExecute();
+        String messageTitle = schedule.messageTitle();
+        String message = schedule.messageBody();
+        Email creator = schedule.getCreator();
+        List<Email> destinations = schedule.getDestinations();
 
-    public static Notification of(Schedule schedule) {
-        if (schedule.messageTitle() != null && schedule.messageBody() != null) {
-            return new Notification(schedule);
-        }
-        return defaultNotification(schedule.timeToExecute(), schedule.getCreator(), schedule.getDestinations());
+        return new Notification(timestamp, messageTitle, message, creator, destinations);
+
     }
 
     /**
@@ -84,6 +93,10 @@ public class Notification {
         return messageTitle;
     }
 
+    public Instant timestamp() {
+        return timestamp;
+    }
+
     public String message() {
         return message;
     }
@@ -95,4 +108,14 @@ public class Notification {
     public boolean isRecurrent() {
         return recurrence != null;
     }
+
+    public Optional<String> toJson() {
+        try {
+            return Optional.ofNullable(objectMapper.writeValueAsString(this));
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+        return Optional.empty();
+    }
+
 }
