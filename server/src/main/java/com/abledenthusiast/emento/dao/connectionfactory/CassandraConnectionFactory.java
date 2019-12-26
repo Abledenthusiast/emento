@@ -1,6 +1,8 @@
 package com.abledenthusiast.emento.dao.connectionfactory;
 
 import com.datastax.driver.core.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -11,13 +13,14 @@ import java.io.InputStream;
 import java.security.KeyStore;
 
 public class CassandraConnectionFactory implements ConnectionFactory<Session> {
+
+    private final Logger log = LoggerFactory.getLogger(CassandraConnectionFactory.class);
     private String host;
     private int port;
     private String username;
     private String password;
 
-    private String sslKeyStorePassword;
-    private String ssl_keystore_file_path;
+    private String sslKeyStorePassword = "changeit";
 
     private File sslKeyStoreFile;
 
@@ -33,34 +36,9 @@ public class CassandraConnectionFactory implements ConnectionFactory<Session> {
     @Override
     public Session connect() {
         if (cluster == null) {
-            JdkSSLOptions sslOptions = null;
-            try {
-                loadCassandraConnectionDetails();
 
-                final KeyStore keyStore = KeyStore.getInstance("JKS");
-                try (final InputStream is = new FileInputStream(sslKeyStoreFile)) {
-                    keyStore.load(is, sslKeyStorePassword.toCharArray());
-                }
-
-                final KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory
-                                                                                .getDefaultAlgorithm());
-                kmf.init(keyStore, sslKeyStorePassword.toCharArray());
-                final TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory
-                                                                                    .getDefaultAlgorithm());
-                tmf.init(keyStore);
-
-                // Creates a socket factory for HttpsURLConnection using JKS contents.
-                final SSLContext sc = SSLContext.getInstance("TLSv1.2");
-                sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(), new java.security.SecureRandom());
-
-                sslOptions = RemoteEndpointAwareJdkSSLOptions.builder()
-                                                                           .withSSLContext(sc)
-                                                                           .build();
-            } catch(Exception e) {
-
-            }
+            JdkSSLOptions sslOptions = getJdkSSLOptions();
             cluster = Cluster.builder()
-                             .withProtocolVersion(ProtocolVersion.V4)
                              .addContactPoint(host)
                              .withPort(port)
                              .withCredentials(username, password)
@@ -69,6 +47,36 @@ public class CassandraConnectionFactory implements ConnectionFactory<Session> {
         }
 
         return cluster.connect();
+    }
+
+    private JdkSSLOptions getJdkSSLOptions() {
+        JdkSSLOptions sslOptions = null;
+        try {
+            loadCassandraConnectionDetails();
+
+            final KeyStore keyStore = KeyStore.getInstance("JKS");
+            try (final InputStream is = new FileInputStream(sslKeyStoreFile)) {
+                keyStore.load(is, sslKeyStorePassword.toCharArray());
+            }
+
+            final KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory
+                                                                            .getDefaultAlgorithm());
+            kmf.init(keyStore, sslKeyStorePassword.toCharArray());
+            final TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory
+                                                                                .getDefaultAlgorithm());
+            tmf.init(keyStore);
+
+            // Creates a socket factory for HttpsURLConnection using JKS contents.
+            final SSLContext sc = SSLContext.getInstance("TLSv1.2");
+            sc.init(kmf.getKeyManagers(), tmf.getTrustManagers(), new java.security.SecureRandom());
+
+            sslOptions = RemoteEndpointAwareJdkSSLOptions.builder()
+                                                         .withSSLContext(sc)
+                                                         .build();
+        } catch(Exception e) {
+            log.warn("exception while attempting to setup ssl {}", e.getMessage());
+        }
+        return sslOptions;
     }
 
     /**
@@ -85,7 +93,7 @@ public class CassandraConnectionFactory implements ConnectionFactory<Session> {
         if (javaHomeDirectory == null || javaHomeDirectory.isEmpty()) {
             throw new Exception("JAVA_HOME not set");
         }
-        ssl_keystore_file_path = new StringBuilder(javaHomeDirectory).append("/jre/lib/security/cacerts").toString();
+        ssl_keystore_file_path = new StringBuilder(javaHomeDirectory).append("/lib/security/cacerts").toString();
 
         sslKeyStorePassword = (ssl_keystore_password != null && !ssl_keystore_password.isEmpty()) ?
                               ssl_keystore_password : sslKeyStorePassword;

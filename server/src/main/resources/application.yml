@@ -9,7 +9,7 @@ emento:
 
   cassandra:
     host: ${cassandra.host:localhost}
-    password: ${cassandra.accountKey:cassandra}
+    password: ${cassandra.account.key:cassandra}
     username: ${cassandra.username:cassandra}
     port: 10350
 

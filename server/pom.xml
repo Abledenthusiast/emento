@@ -13,7 +13,7 @@
     <artifactId>server</artifactId>
     <properties>
         <micronaut.version>1.2.0</micronaut.version>
-        <jdk.version>11</jdk.version>
+        <jdk.version>12</jdk.version>
         <maven.compiler.target>${jdk.version}</maven.compiler.target>
         <maven.compiler.source>${jdk.version}</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-servicebus</artifactId>
-            <version>1.0.0</version>
+            <version>1.2.15</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
