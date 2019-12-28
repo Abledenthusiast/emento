@@ -38,11 +38,13 @@ public class InstanceSchedulerTest {
     }
 
     @org.testng.annotations.Test
-    public void testImmediateScheduling() {
+    public void testImmediateScheduling() throws InterruptedException {
         ExecutionTask task = mock(ExecutionTask.class);
         Notification notification = mock(Notification.class);
         when(task.executionInstant()).thenReturn(Instant.now().plus(Duration.ofSeconds(0)));
         when(task.executionTime()).thenReturn(Duration.ofSeconds(0));
+
+        Thread.sleep(1500);
 
         instanceScheduler.schedule(task);
         verify(task).execute(any(Handler.class));
