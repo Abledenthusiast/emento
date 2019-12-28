@@ -26,10 +26,7 @@ public class EmailHandler implements Handler {
 
     @Override
     public void handleNotification(Notification notification) throws Exception {
-        if (notification.isRecurrent()) {
-
-        }
-        send(notification.creator(), notification.destinations(), notification.messageTitle(), notification.message());
+        send(notification.getCreator(), notification.getDestinations(), notification.getMessageTitle(), notification.getMessage());
     }
 
 

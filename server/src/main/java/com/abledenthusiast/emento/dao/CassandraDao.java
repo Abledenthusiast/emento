@@ -30,7 +30,7 @@ public abstract class CassandraDao<T> implements Dao<T> {
     protected Optional<String> toJson(Object object) {
         if (object != null) {
             try {
-                Optional.ofNullable(objectMapper.writeValueAsString(object));
+                return Optional.ofNullable(objectMapper.writeValueAsString(object));
             } catch (Exception e) {
                 System.out.println(e);
             }

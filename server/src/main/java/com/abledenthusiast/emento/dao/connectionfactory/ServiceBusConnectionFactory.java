@@ -15,6 +15,7 @@ public class ServiceBusConnectionFactory implements ConnectionFactory<QueueClien
 
     private String connectionString;
     private String queueName;
+    private QueueClient queueClient;
 
     public ServiceBusConnectionFactory(String connectionString, String queueName) {
         this.connectionString = connectionString;
@@ -24,8 +25,14 @@ public class ServiceBusConnectionFactory implements ConnectionFactory<QueueClien
     @Nullable
     @Override
     public QueueClient connect() {
+        synchronized(this) {
+            if (queueClient != null) {
+                return queueClient;
+            }
+        }
         try {
-            return new QueueClient(new ConnectionStringBuilder(connectionString, queueName), ReceiveMode.PEEKLOCK);
+            queueClient = new QueueClient(new ConnectionStringBuilder(connectionString, queueName), ReceiveMode.PEEKLOCK);
+            return queueClient;
         } catch(ServiceBusException | InterruptedException exception) {
             throw new RuntimeException(exception);
         }

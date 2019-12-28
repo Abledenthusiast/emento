@@ -20,8 +20,16 @@ public abstract class Task {
         this.notification = notification;
     }
 
+    public Notification getNotification() {
+        return notification;
+    }
+
     public Duration executionTime() {
         return Duration.between(Instant.now(), timeToExecute);
+    }
+
+    public Instant executionInstant() {
+        return timeToExecute;
     }
 
 

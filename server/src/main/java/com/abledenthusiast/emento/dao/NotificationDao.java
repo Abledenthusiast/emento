@@ -1,6 +1,5 @@
 package com.abledenthusiast.emento.dao;
 
-import com.abledenthusiast.emento.dao.connectionfactory.CassandraConnectionFactory;
 import com.abledenthusiast.emento.dao.connectionfactory.ConnectionFactory;
 import com.abledenthusiast.emento.scheduling.notifications.Notification;
 import com.datastax.driver.core.BoundStatement;
@@ -20,7 +19,7 @@ public class NotificationDao extends CassandraDao<Notification> {
     }
 
     public void insert(Notification notification) {
-        BoundStatement statement = insertStatement.bind(notification.id(), toJson(notification));
+        BoundStatement statement = insertStatement.bind(notification.getId(), toJson(notification));
         execute(statement);
     }
 
