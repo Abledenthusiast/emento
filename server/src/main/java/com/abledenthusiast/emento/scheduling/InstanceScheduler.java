@@ -25,13 +25,12 @@ public class InstanceScheduler implements Scheduler {
     private final int POOL_SIZE = 8;
     private ScheduledExecutorService executor;
     private Handler emailHandler;
-    private EmentoProperties ementoProperties;
     private ServiceBusProducer serviceBusProducer;
 
 
-    public InstanceScheduler(EmentoProperties ementoProperties, ServiceBusProducer serviceBusProducer) {
+    public InstanceScheduler(Handler emailHandler, ServiceBusProducer serviceBusProducer) {
         executor = new ScheduledThreadPoolExecutor(POOL_SIZE);
-        emailHandler = new EmailHandler(ementoProperties);
+        this.emailHandler = emailHandler;
         this.serviceBusProducer = serviceBusProducer;
     }
 
@@ -64,7 +63,7 @@ public class InstanceScheduler implements Scheduler {
         }
 
         public Scheduler build() {
-            InstanceScheduler scheduler = new InstanceScheduler(props, null);
+            InstanceScheduler scheduler = new InstanceScheduler(null, null);
             /*
              Room for more fun!
             */

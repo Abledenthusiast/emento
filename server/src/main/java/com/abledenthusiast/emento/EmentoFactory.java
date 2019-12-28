@@ -1,5 +1,7 @@
 package com.abledenthusiast.emento;
 
+import com.abledenthusiast.emento.client.EmailHandler;
+import com.abledenthusiast.emento.client.Handler;
 import com.abledenthusiast.emento.dao.connectionfactory.CassandraConnectionFactory;
 import com.abledenthusiast.emento.dao.connectionfactory.ConnectionFactory;
 import com.abledenthusiast.emento.dao.connectionfactory.ServiceBusConnectionFactory;
@@ -31,7 +33,7 @@ public class EmentoFactory {
 
     @Bean
     Scheduler scheduler() {
-        return new InstanceScheduler(ementoProperties, serviceBusProducer());
+        return new InstanceScheduler(emailHandler(), serviceBusProducer());
     }
 
     @Bean
@@ -43,6 +45,12 @@ public class EmentoFactory {
     ConnectionFactory<Session> connectionFactory() {
         return new CassandraConnectionFactory(ementoProperties.cassandraHost(), ementoProperties.cassandraPort(),
                                               ementoProperties.cassandraUsername(), ementoProperties.cassandraPassword());
+    }
+
+
+    @Bean
+    Handler emailHandler() {
+        return new EmailHandler(ementoProperties);
     }
 
 
