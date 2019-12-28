@@ -41,7 +41,7 @@ public class InstanceSchedulerTest {
     public void testImmediateScheduling() {
         ExecutionTask task = mock(ExecutionTask.class);
         Notification notification = mock(Notification.class);
-        when(task.executionInstant()).thenReturn(Instant.now().plus(Duration.ofSeconds(1)));
+        when(task.executionInstant()).thenReturn(Instant.now().plus(Duration.ofSeconds(0)));
         when(task.executionTime()).thenReturn(Duration.ofSeconds(0));
 
         instanceScheduler.schedule(task);
