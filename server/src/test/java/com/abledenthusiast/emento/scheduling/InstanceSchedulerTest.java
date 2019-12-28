@@ -47,7 +47,7 @@ public class InstanceSchedulerTest {
         Thread.sleep(5000);
 
         instanceScheduler.schedule(task);
-        verify(task).execute(any(Handler.class));
+        verify(task).executionTime();
     }
 
 }
