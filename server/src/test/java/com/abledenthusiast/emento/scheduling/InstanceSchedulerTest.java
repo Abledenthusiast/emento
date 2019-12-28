@@ -44,9 +44,10 @@ public class InstanceSchedulerTest {
         when(task.executionInstant()).thenReturn(Instant.now().plus(Duration.ofSeconds(0)));
         when(task.executionTime()).thenReturn(Duration.ofSeconds(0));
 
-        Thread.sleep(1500);
+        Thread.sleep(5000);
 
         instanceScheduler.schedule(task);
         verify(task).execute(any(Handler.class));
     }
+
 }
