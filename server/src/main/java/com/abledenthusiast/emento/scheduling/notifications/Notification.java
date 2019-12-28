@@ -29,6 +29,7 @@ public class Notification {
     private Notification() {}
 
     public Notification(Instant timestamp, String messageTitle, String message, Email creator, List<Email> destinations) {
+        this.id = UUID.randomUUID();
         this.messageTitle = messageTitle;
         this.timestamp = timestamp;
         this.message = message;
@@ -75,6 +76,12 @@ public class Notification {
      */
     public static Notification defaultNotification(Instant timestamp, Email creator, List<Email> destinations) {
         return new Notification(timestamp, DEFAULT_TITLE, DEFAULT_MESSAGE, creator, destinations);
+    }
+
+    public String getIdAsString() {
+        return Optional.ofNullable(id)
+                       .map(UUID::toString)
+                       .orElse(null);
     }
 
 

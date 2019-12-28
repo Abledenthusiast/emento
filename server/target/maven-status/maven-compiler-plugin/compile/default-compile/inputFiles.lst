@@ -13,6 +13,7 @@
 /Users/abledenthusiast/Development/emento/server/src/main/java/com/abledenthusiast/emento/client/EmailHandler.java
 /Users/abledenthusiast/Development/emento/server/src/main/java/com/abledenthusiast/emento/scheduling/ServiceBus/MessageHandler.java
 /Users/abledenthusiast/Development/emento/server/src/main/java/com/abledenthusiast/emento/dao/GroupDao.java
+/Users/abledenthusiast/Development/emento/server/src/main/java/com/abledenthusiast/emento/scheduling/ServiceBus/ServiceBusManager.java
 /Users/abledenthusiast/Development/emento/server/src/main/java/com/abledenthusiast/emento/EmentoApplication.java
 /Users/abledenthusiast/Development/emento/server/src/main/java/com/abledenthusiast/emento/client/Handler.java
 /Users/abledenthusiast/Development/emento/server/src/main/java/com/abledenthusiast/emento/dto/SchedulingProperties.java

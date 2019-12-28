@@ -19,7 +19,7 @@ public class NotificationDao extends CassandraDao<Notification> {
     }
 
     public void insert(Notification notification) {
-        BoundStatement statement = insertStatement.bind(notification.getId(), toJson(notification));
+        BoundStatement statement = insertStatement.bind(notification.getIdAsString(), toJson(notification).orElse(null));
         execute(statement);
     }
 
